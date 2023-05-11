@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:socialnetwork/model/color_theme.dart';
 import 'package:socialnetwork/util/images.dart';
 
 import '../custom_widget/my_gradient.dart';
 import '../custom_widget/my_textField.dart';
 import '../custom_widget/padding_with.dart';
+import '../model/alert_helper.dart';
 import '../model/my_painter.dart';
+import '../util/firebase_handler.dart';
 
 class AuthController extends StatefulWidget {
   const AuthController({Key? key}) : super(key: key);
@@ -53,11 +56,11 @@ class _AuthControllerState extends State<AuthController> {
             hideKeyboard();
           },
           child: Container(
-            //decoration: MyGradient(startColor: ColorTheme().pointer(), endColor: ColorTheme().base(), horizontal: false),
             decoration: MyGradient(
-                startColor: Colors.white,
-                endColor: Colors.red,
-                horizontal: false),
+              startColor: ColorTheme().pointer(),
+              endColor: ColorTheme().base(),
+              horizontal: false,
+            ),
             width: MediaQuery.of(context).size.width,
             height: (MediaQuery.of(context).size.height > 700)
                 ? MediaQuery.of(context).size.height
@@ -65,9 +68,11 @@ class _AuthControllerState extends State<AuthController> {
             child: SafeArea(
               child: Column(
                 children: [
-                  Image.asset(
-                    logoImage,
-                    height: MediaQuery.of(context).size.height / 5,
+                  PaddingWith(
+                    child: Image.asset(
+                      logoImage,
+                      height: MediaQuery.of(context).size.height / 5,
+                    ),
                   ),
                   logOrCreateButtons(),
                   Expanded(
@@ -80,6 +85,21 @@ class _AuthControllerState extends State<AuthController> {
                       ],
                     ),
                   ),
+                  PaddingWith(
+                      child: TextButton(
+                          onPressed: () {
+                            authToFirebase();
+                          },
+                          child: Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            decoration: MyGradient(
+                                horizontal: true,
+                                radius: 25,
+                                startColor: ColorTheme().accent(),
+                                endColor: ColorTheme().pointer()),
+                            child: const Center(child: Text("C'est Parti !")),
+                          )))
                 ],
               ),
             ),
@@ -91,12 +111,11 @@ class _AuthControllerState extends State<AuthController> {
 
   Widget logOrCreateButtons() {
     return Container(
-      // decoration: MyGradient(
-      //     horizontal: true,
-      //     startColor: ColorTheme().base(),
-      //     endColor: ColorTheme().pointer(),
-      //     radius: 25
-      // ),
+      decoration: MyGradient(
+          horizontal: true,
+          startColor: ColorTheme().base(),
+          endColor: ColorTheme().pointer(),
+          radius: 25),
       width: 300,
       height: 50,
       child: CustomPaint(
@@ -159,5 +178,36 @@ class _AuthControllerState extends State<AuthController> {
         ),
       ),
     );
+  }
+
+  authToFirebase() {
+    hideKeyboard();
+    bool signIn = (_pageController.page == 0);
+    String name = _name.text;
+    String surname = _surname.text;
+    String mail = _mail.text;
+    String pwd  = _password.text;
+
+    if ((validText(mail)) && (validText(pwd))) {
+      if (signIn) {
+        //Methode vers Firebase
+        FirebaseHandler().signIn(mail, pwd);
+      } else {
+        if ((validText(name)) && (validText(surname))) {
+          //Méthode vers Firebase
+          FirebaseHandler().createUser(mail, pwd, name, surname);
+        } else {
+          //Alerte nom et prénom
+          AlertHelper().error(context, "Nom ou prénom inexistant");
+        }
+      }
+    } else {
+      //Alerte utilisateur pas de mail ou mot de passe
+      AlertHelper().error(context, "Mot de passe ou mail inexistant");
+    }
+  }
+
+  bool validText(String string) {
+    return (string.isNotEmpty && string != "");
   }
 }
