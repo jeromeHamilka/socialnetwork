@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 
 class ColorTheme {
-
   //Sans le Context
   bool isDarkMode() {
     final window = WidgetsBinding.instance.window;
@@ -16,10 +14,10 @@ class ColorTheme {
     return (mode == Brightness.dark);
   }
 
-  Color pointer() => Colors.teal;
-  Color base() => (isDarkMode()) ? const Color.fromRGBO(33, 33, 33, 1) : Colors.white;
-  Color accent() => (isDarkMode()) ? Colors.grey : Colors.grey;
-  Color textColor() => (isDarkMode()) ? Colors.white: Colors.black;
-
+  //Color pointer() => Colors.deepOrange;
+  Color pointer() => Colors.amber.shade800;
+  Color base() =>
+      (isDarkMode()) ? const Color.fromRGBO(33, 33, 33, 1) : Colors.white;
+  Color accent() => (isDarkMode()) ? Colors.grey : Colors.blue;
+  Color textColor() => (isDarkMode()) ? Colors.white : Colors.black;
 }
-
