@@ -2,27 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../util/constants.dart';
 
 class Member {
-  late String uid;
-  late String name;
-  late String surname;
-  late String? imageUrl;
-  late List<dynamic> followers;
-  late List<dynamic> following;
-  late DocumentReference<Map<String, dynamic>> ref;
-  late String documentId;
-  late String? description;
+  String? uid;
+  String? name;
+  String? surname;
+  String? imageUrl;
+  List<dynamic>? followers;
+  List<dynamic>? following;
+  DocumentReference? ref;
+  String? documentId;
+  String? description;
 
-  Member(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  Member(DocumentSnapshot snapshot) {
     ref = snapshot.reference;
     uid = snapshot.id;
-    Map<String, dynamic>? datas = snapshot.data();
-    //print(datas);
-    name = datas?[nameKey];
-    surname = datas?[surnameKey];
-    imageUrl = datas?[imageUrlKey];
-    followers = datas?[followersKey];
-    following = datas?[followingKey];
-    description = datas?[descriptionKey];
+    Map<String, dynamic> datas = snapshot.data() as Map<String, dynamic>;
+    // print("Showing datas");
+    // print(datas);
+    name = datas[nameKey];
+    surname = datas[surnameKey];
+    imageUrl = datas[imageUrlKey];
+    followers = datas[followersKey];
+    following = datas[followingKey];
+    description = datas[descriptionKey];
   }
 
   Map<String, dynamic> toMap() {
@@ -33,7 +34,7 @@ class Member {
       followingKey: following,
       followersKey: followers,
       imageUrlKey: imageUrl,
-      descriptionKey: description,
+      descriptionKey: description
     };
   }
 }

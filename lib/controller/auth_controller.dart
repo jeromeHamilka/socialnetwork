@@ -10,7 +10,7 @@ import '../model/my_painter.dart';
 import '../util/firebase_handler.dart';
 
 class AuthController extends StatefulWidget {
-  const AuthController({Key? key}) : super(key: key);
+  const AuthController({super.key});
 
   @override
   State<AuthController> createState() => _AuthControllerState();
@@ -50,17 +50,16 @@ class _AuthControllerState extends State<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: InkWell(
+        body: SingleChildScrollView(
+      child: InkWell(
           onTap: () {
             hideKeyboard();
           },
           child: Container(
             decoration: MyGradient(
-              startColor: ColorTheme().pointer(),
-              endColor: ColorTheme().base(),
-              horizontal: false,
-            ),
+                startColor: ColorTheme().pointer(),
+                endColor: ColorTheme().base(),
+                horizontal: false),
             width: MediaQuery.of(context).size.width,
             height: (MediaQuery.of(context).size.height > 700)
                 ? MediaQuery.of(context).size.height
@@ -79,10 +78,7 @@ class _AuthControllerState extends State<AuthController> {
                     flex: 2,
                     child: PageView(
                       controller: _pageController,
-                      children: [
-                        logCard(true),
-                        logCard(false),
-                      ],
+                      children: [logCard(true), logCard(false)],
                     ),
                   ),
                   PaddingWith(
@@ -103,10 +99,8 @@ class _AuthControllerState extends State<AuthController> {
                 ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          )),
+    ));
   }
 
   Widget logOrCreateButtons() {
@@ -121,10 +115,7 @@ class _AuthControllerState extends State<AuthController> {
       child: CustomPaint(
         painter: MyPainter(pageController: _pageController),
         child: Row(
-          children: [
-            btn("Se Connecter"),
-            btn("Créer un compte"),
-          ],
+          children: [btn("Se Connecter"), btn("Créer un compte")],
         ),
       ),
     );
@@ -167,17 +158,16 @@ class _AuthControllerState extends State<AuthController> {
     ));
 
     return PaddingWith(
-      child: Center(
-        child: Card(
-          elevation: 7.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: list,
-          ),
+        child: Center(
+      child: Card(
+        elevation: 7.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: list,
         ),
       ),
-    );
+    ));
   }
 
   authToFirebase() {
@@ -186,7 +176,7 @@ class _AuthControllerState extends State<AuthController> {
     String name = _name.text;
     String surname = _surname.text;
     String mail = _mail.text;
-    String pwd  = _password.text;
+    String pwd = _password.text;
 
     if ((validText(mail)) && (validText(pwd))) {
       if (signIn) {
@@ -208,6 +198,6 @@ class _AuthControllerState extends State<AuthController> {
   }
 
   bool validText(String string) {
-    return (string.isNotEmpty && string != "");
+    return (string != "");
   }
 }

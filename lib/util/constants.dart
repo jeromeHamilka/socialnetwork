@@ -20,7 +20,7 @@ String memberRef = "member";
 String typeKey = "type";
 
 String like = "Like";
-String follow= "Follow";
+String follow = "Follow";
 String comment = "Comment";
 // Icons
 

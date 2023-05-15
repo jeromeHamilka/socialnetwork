@@ -38,6 +38,7 @@ class _MainControllerState extends State<MainController> {
         .snapshots()
         .listen((event) {
       setState(() {
+        print("New Event => $event");
         member = Member(event);
       });
     });
@@ -55,16 +56,6 @@ class _MainControllerState extends State<MainController> {
         ? const LoadingController()
         : Scaffold(
             key: _globalKey,
-            appBar: AppBar(
-              backgroundColor: Colors.blue,
-              leading: const BackButton(
-                color: Colors.white,
-              ),
-              title: Text(
-                "Salut ${member?.surname}",
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
             body: showPage(),
             bottomNavigationBar: BottomAppBar(
               color: ColorTheme().accent(),
@@ -97,19 +88,12 @@ class _MainControllerState extends State<MainController> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              shape: const CircleBorder(),
-              backgroundColor: Colors.lightBlue,
               onPressed: () {
-                _globalKey.currentState!.showBottomSheet(
-                  (context) => WritePost(
-                    memberId: widget.memberUid,
-                  ),
-                );
+                _globalKey.currentState?.showBottomSheet((context) => WritePost(
+                      memberId: widget.memberUid,
+                    ));
               },
-              child: const Icon(
-                Icons.border_color,
-                color: Colors.white,
-              ),
+              child: writePost,
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
@@ -122,7 +106,7 @@ class _MainControllerState extends State<MainController> {
     });
   }
 
-  Widget? showPage() {
+  Widget showPage() {
     switch (index) {
       case 0:
         return HomePage(member: member!);
@@ -132,7 +116,8 @@ class _MainControllerState extends State<MainController> {
         return NotifPage(member: member!);
       case 3:
         return ProfilePage(member: member!);
+      default:
+        return Container();
     }
-    return null;
   }
 }
